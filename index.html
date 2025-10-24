@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crazy Thingz</title>
+  <link rel="stylesheet" href="elect.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1 class="store-name">💖🛒 Crazy Thingz 🛍💖</h1>
+  </header>
+
+ <!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-light shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand text-success fw-bold" href="#">CrazyThingz</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#elec">Electronics</a></li>
+        <li class="nav-item"><a class="nav-link" href="#home">Home Appliances</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+
+      <!-- Search Bar -->
+      <form class="d-flex me-3" role="search" onsubmit="return false;">
+        <input id="searchBox" class="form-control me-2" type="search" placeholder="Search products..." aria-label="Search">
+        <button class="btn btn-outline-success" type="button" onclick="searchProducts()">Search</button>
+      </form>
+
+<!-- 🛒 Cart Button -->
+<a href="cart.html">
+  <button id="cartButton" class="btn btn-success fw-bold">
+    🛒 Cart (<span id="cartCount">0</span>)
+  </button>
+</a>
+
+<script>
+  // ✅ get & save functions
+  function getCart() {
+    return JSON.parse(localStorage.getItem('cart')) || [];
+  }
+
+  function updateCartCount() {
+    const cart = getCart();
+    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById('cartCount').textContent = totalItems;
+  }
+
+  // ✅ listen for changes (from other pages)
+  window.addEventListener("storage", (event) => {
+    if (event.key === "cart") updateCartCount();
+  });
+
+  // ✅ run when page opens
+  document.addEventListener("DOMContentLoaded", updateCartCount);
+</script>
+
+
+    </div>
+  </div>
+</nav>
+
+
+
+    <!--  Carousel Section -->
+  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="sale6.jpg" class="d-block w-100" alt="Banner 1">
+      </div>
+      <div class="carousel-item">
+        <img src="sale1.jpg" class="d-block w-100" alt="Banner 2">
+      </div>
+      <div class="carousel-item">
+        <img src="sale4.jpg" class="d-block w-100" alt="Banner 3">
+      </div>
+    </div>
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+
+  <!-- Electronics Section -->
+  <section class="category" id="elec">
+    <h2>Electronics (ELEC)</h2>
+    <h3>Speakers & Mobiles</h3>
+    <div class="products">
+      <div class="product-card">
+        <img src="images/bluetooth speaker.jpg" alt="Bluetooth Speaker">
+        <h3>Bluetooth Speaker</h3>
+        <p>Starts from ₹199</p>
+        <div class="buttons">
+          <a link href="speaker.html">
+          <button class="cart-btn">view product</button></a>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/mobile.jpg" alt="Mobile">
+        <h3>Mobile Phones</h3>
+        <p>Starts from ₹9,999</p>
+        <div class="buttons">
+          <a link href="mobile.html">
+          <button class="cart-btn">view product</button></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Home appliances -->
+<section class="category" id="home">
+  <h2>home Appliances</h2>
+  <h3>washing mechine & Night lamp</h3>
+  <div class="products">
+    
+    <!-- washing meching -->
+    <div class="product-card">
+      <img src="images/washing mechine.jpg" alt="washing">
+      <h3>Washing Machine</h3>
+      <p>Starts from ₹18,999</p>
+      <a href="washing.html">
+        <button class="cart-btn">View Products</button>
+      </a>
+    </div>
+
+    <!-- night lamp -->
+    <div class="product-card">
+      <img src="images/lamp.jpg" alt="lamp">
+      <h3>Night Lamp</h3>
+      <p>Starts from ₹999</p>
+      <a href="lamp.html">
+        <button class="cart-btn">View Products</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p>&copy; 2025 Crazy Thingz. All rights reserved.</p>
+    <p>Email: Crazythingz03@gmail.com | 📞 9500047733</p>
+    <p>
+      Follow us:
+      <a href="https://www.instagram.com/">Instagram</a> | 
+      <a href="https://www.facebook.com/">Facebook</a> | 
+    </p>
+  </footer>
+
+<script>
+  // 🔥 FadeIn function
+  function fadeIn(element) {
+    element.style.display = "block";
+    element.style.opacity = 0;
+    let opacity = 0;
+    let timer = setInterval(() => {
+      if (opacity >= 1) clearInterval(timer);
+      element.style.opacity = opacity;
+      opacity += 0.1;
+    }, 30);
+  }
+
+  // ❄️ FadeOut function
+  function fadeOut(element) {
+    let opacity = 1;
+    let timer = setInterval(() => {
+      if (opacity <= 0) {
+        clearInterval(timer);
+        element.style.display = "none";
+      }
+      element.style.opacity = opacity;
+      opacity -= 0.1;
+    }, 30);
+  }
+
+  // 💛 Main search function
+  function searchProducts() {
+    let input = document.getElementById("searchBox").value.toLowerCase().trim();
+    let products = document.querySelectorAll(".product-card");
+    let found = false;
+
+    products.forEach(product => {
+      let text = product.innerText.toLowerCase();
+      let contentHTML = product.innerHTML;
+
+      // Remove old highlights
+      contentHTML = contentHTML.replace(/<mark class="highlight">|<\/mark>/gim, "");
+
+      if (text.includes(input) || input === "") {
+        fadeIn(product);
+        found = true;
+
+        if (input !== "") {
+          // Highlight matching text
+          const regex = new RegExp("(" + input + ")", "gi");
+          contentHTML = contentHTML.replace(regex, '<mark class="highlight">$1</mark>');
+        }
+
+        product.innerHTML = contentHTML;
+      } else {
+        fadeOut(product);
+      }
+    });
+
+    // Show "no products found" message
+    if (!found && input !== "") {
+      if (!document.getElementById("noResults")) {
+        const msg = document.createElement("p");
+        msg.id = "noResults";
+        msg.textContent = "😢 No products found!";
+        msg.style.textAlign = "center";
+        msg.style.color = "red";
+        msg.style.fontWeight = "bold";
+        document.querySelector(".products").appendChild(msg);
+      }
+    } else {
+      const msg = document.getElementById("noResults");
+      if (msg) msg.remove();
+    }
+  }
+
+  // 💫 Live search while typing
+  document.getElementById("searchBox").addEventListener("input", searchProducts);
+
+
+  // 🌟 All products database
+const allProducts = [
+  { id:"bluetooth-speaker", name:"Bluetooth Speaker", img:"images/bluetooth speaker.jpg", price:199, page:"speaker.html" },
+  { id:"mobile-phone", name:"Mobile Phone", img:"images/mobile.jpg", price:9999, page:"mobile.html" },
+  { id:"washing-machine", name:"Washing Machine", img:"images/washing mechine.jpg", price:18999, page:"washing.html" },
+  { id:"night-lamp", name:"Night Lamp", img:"images/lamp.jpg", price:999, page:"lamp.html" }
+];
+
+// Save globally in localStorage
+localStorage.setItem('allProducts', JSON.stringify(allProducts));
+
+
+
+function globalSearch() {
+  const input = document.getElementById("searchBox").value.toLowerCase().trim();
+  localStorage.setItem("searchQuery", input); // Save query
+  window.location.href = "search-results.html"; // Redirect to results page
+}
+
+// Bind input enter/search button
+document.getElementById("searchBox").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter") globalSearch();
+});
+
+</script>
+
+
+
+
+
+</body>
+</html>
