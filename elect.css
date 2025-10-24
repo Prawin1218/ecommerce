@@ -1,0 +1,128 @@
+/* Category Section */
+.category {
+  padding: 50px;
+  background-color: #98ccd0;
+  margin: 30px auto;
+  width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+}
+
+.category h2 {
+  color: #232f3e;
+  border-bottom: 2px solid #572020;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.category h3 {
+  margin-top: 25px;
+  color: #833e62;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* Product Cards */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 20px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 15px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.product-card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.cart-btn {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Footer */
+footer {
+  background-color: rgb(251, 251, 253);
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Store Name */
+.store-name {
+  text-align: center;
+  font-size: 36px;
+  color: #2a535a;
+  margin: 20px 0 10px 0;
+  font-family: 'Arial', sans-serif;
+  text-shadow: 1px 1px 3px #000;
+}
+
+/* Carousel */
+.carousel {
+  max-width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.carousel img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+/* Navbar Links */
+.navbar-nav .nav-link {
+  color: #2a535a;
+  font-size: 18px;
+  margin: 0 10px;
+
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: #577f86;
+  color: white;
+  border-radius: 6px;
+ 
+}
+
+.highlight {
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
+
+

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - Crazy Thingz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #232f3e;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    main {
+      max-width: 900px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .product-img {
+      width: 300px;
+      max-width: 100%;
+      display: block;
+      margin: 0 auto;
+      border-radius: 10px;
+    }
+    .product-title {
+      text-align:center;
+      margin-top:15px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #111;
+    }
+    .product-desc {
+      text-align:center;
+      font-size: 16px;
+      color: #555;
+      margin: 10px 0;
+    }
+    .product-price {
+      text-align:center;
+      font-size: 22px;
+      color: #B12704;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+    .offers {
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .offers p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #111;
+    }
+    .btn-container {
+      text-align:center;
+      margin-top:20px;
+    }
+    button {
+      padding:12px 25px;
+      margin:8px;
+      font-size:16px;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+    .btn-cart { background-color:#ff9900; color:white; }
+    .btn-cart:hover { background-color:#e68a00; }
+    .btn-buy { background-color:#f0c14b; color:#111; }
+    .btn-buy:hover { background-color:#ddb347; }
+    footer {
+      background-color: #232f3e;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Crazy Thingz
+</header>
+
+<main id="productDetails">
+  <!-- Product details injected by JS -->
+</main>
+
+<footer>
+  &copy; 2025 Crazy Thingz. All rights reserved.<br>
+  Email: Crazythingz03@gmail.com | Contact: 9500047733
+</footer>
+
+<!-- only script section updated -->
+<script>
+  const productData = JSON.parse(localStorage.getItem('selectedProduct'));
+  const container = document.getElementById('productDetails');
+
+  if(productData){
+    container.innerHTML = `
+      <img class="product-img" src="${productData.img}" alt="${productData.name}">
+      <h2 class="product-title">${productData.name}</h2>
+      <p class="product-desc">${productData.desc || ''}</p>
+      <p class="product-price">₹${productData.price}</p>
+      <div class="offers">
+        <p>Bank Offer: Up to ₹1,250 discount on SBI Credit Cards</p>
+        <p>No Cost EMI: Up to ₹675.40 EMI interest savings</p>
+        <p>Cashback: Up to ₹449 cashback on Amazon Pay Balance</p>
+      </div>
+      <div class="btn-container">
+        <button class="btn-cart" onclick="addToCart()">Add to Cart</button>
+        <button class="btn-buy" onclick="buyNow()">Buy Now</button>
+        <button class="btn-buy" style="background:#007bff;color:white;" onclick="goBack()">Back to Shop</button>
+      </div>
+    `;
+  } else {
+    container.innerHTML = '<p style="text-align:center;">Product not found!</p>';
+  }
+
+  function getCart(){ return JSON.parse(localStorage.getItem('cart')) || []; }
+  function saveCart(cart){ localStorage.setItem('cart', JSON.stringify(cart)); }
+
+  function addToCart(){
+    let cart = getCart();
+    const existing = cart.find(p => p.id === productData.id);
+    if(existing){
+      existing.qty += 1;
+    } else {
+      cart.push({...productData, qty:1});
+    }
+    saveCart(cart);
+    alert(`${productData.name} added to cart!`);
+  }
+
+  function buyNow(){
+    addToCart();
+    window.location.href = 'checkout.html';
+  }
+
+  function goBack(){
+    window.location.href = 'elect.html';
+  }
+
+
+
+  function addToCart(){
+  let cart = getCart();
+  const existing = cart.find(p => p.id === productData.id);
+  if(existing){
+    existing.qty += 1;
+  } else {
+    cart.push({...productData, qty:1});
+  }
+  saveCart(cart);
+  
+  // 🔥 Trigger live update for other pages
+  window.dispatchEvent(new StorageEvent('storage', { key: 'cart' }));
+  
+  alert(`${productData.name} added to cart! 🛒`);
+}
+
+</script>
+
+
+</body>
+</html>

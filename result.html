@@ -1,0 +1,36 @@
+<section class="products" id="results"></section>
+
+<script>
+const query = localStorage.getItem("searchQuery").toLowerCase();
+const allProducts = JSON.parse(localStorage.getItem("allProducts")) || [];
+const resultsContainer = document.getElementById("results");
+
+let found = false;
+
+allProducts.forEach(product => {
+  if(product.name.toLowerCase().includes(query)) {
+    found = true;
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.innerHTML = `
+      <img src="${product.img}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p>₹${product.price}</p>
+      <button onclick="viewProduct('${product.name}','${product.img}',${product.price})">View Product</button>
+      <p style="font-size:12px;color:#555;">Page: ${product.page}</p>
+    `;
+    resultsContainer.appendChild(card);
+  }
+});
+
+if(!found){
+  resultsContainer.innerHTML = '<p style="text-align:center;color:red;">😢 No products found!</p>';
+}
+
+// View product redirect
+function viewProduct(name,img,price){
+  const productData = { id: name.toLowerCase().replace(/\s/g,"-"), name, img, price };
+  localStorage.setItem('selectedProduct', JSON.stringify(productData));
+  window.location.href = "product.html"; // go to product page
+}
+</script>

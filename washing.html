@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Washing Machines - Crazy Thingz</title> 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #98ccd0;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #343a40;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .product-section {
+     padding: 30px;
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+     gap: 20px;
+    }
+
+    .product {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 500px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .product:hover { transform: translateY(-5px); }
+
+    .product img {
+      width: 80%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .product h3 {
+      margin-top: 15px;
+      color: #333;
+    }
+
+    .product p {
+      font-size: 18px;
+      color: #555;
+    }
+
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Washing Machines</h1>
+    <p>Best Budget & Premium Washing Machines</p>
+  </header>
+
+  <section class="product-section" id="productSection">
+    <!-- Products will be injected via JS -->
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Crazy Thingz. All rights reserved.</p>
+    <p>Email: Crazythingz03@gmail.com</p>
+    <p>Contact: 9500047733</p>
+  </footer>
+
+  <script>
+    const PRODUCTS = [
+      { id: 'washing1', name: 'Digi Washing Machine', price: 18999, img: 'images/washing1.jpg', desc: 'Top Load | 7kg | Digital Control' },
+      { id: 'washing2', name: 'Automatic Washing Machine', price: 19999, img: 'images/washing2.jpg', desc: 'Front Load | 8kg | Fully Automatic' },
+      { id: 'washing3', name: 'Samsung Washing Machine', price: 29999, img: 'images/washing3.jpg', desc: 'Front Load | 9kg | Eco Bubble Technology' }
+    ];
+
+    const container = document.getElementById('productSection');
+
+    PRODUCTS.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'product';
+      div.innerHTML = `
+        <img src="${p.img}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p>₹${p.price} Only</p>
+      `;
+      div.addEventListener('click', ()=> {
+        // save clicked product to localStorage and go to details.html
+        localStorage.setItem('selectedProduct', JSON.stringify(p));
+        window.location.href = 'details.html';
+      });
+      container.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>

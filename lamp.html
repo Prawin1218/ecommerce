@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Night Lamps - Crazy Thingz</title> 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #98ccd0;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #343a40;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .product-section {
+      padding: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 500px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .product:hover { transform: translateY(-5px); }
+
+    .product img {
+      width: 80%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .product h3 {
+      margin-top: 15px;
+      color: #333;
+    }
+
+    .product p {
+      font-size: 18px;
+      color: #555;
+    }
+
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Night Lamps</h1>
+    <p>Best Budget & Premium Lamps</p>
+  </header>
+
+  <section class="product-section" id="productSection">
+    <!-- Products will be injected via JS -->
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Crazy Thingz. All rights reserved.</p>
+    <p>Email: Crazythingz03@gmail.com</p>
+    <p>Contact: 9500047733</p>
+  </footer>
+
+  <script>
+    const PRODUCTS = [
+      { id: 'lamp-star', name: 'Star Lamp', price: 899, img: 'images/lamp.jpg', desc: 'Beautiful glowing star lamp for cozy nights' },
+      { id: 'lamp-teddy', name: 'Teddy Lamp', price: 999, img: 'images/lamp1.jpg', desc: 'Cute teddy night lamp, kids favourite' },
+      { id: 'lamp-table', name: 'Table Lamp', price: 599, img: 'images/lamp2.jpg', desc: 'Stylish study table lamp' },
+      { id: 'lamp-led', name: 'LED Mood Lamp', price: 1299, img: 'https://via.placeholder.com/400x300?text=LED+Lamp', desc: 'LED lamp for colorful moods' },
+      { id: 'lamp-night', name: 'Moon Night Lamp', price: 749, img: 'https://via.placeholder.com/400x300?text=Moon+Lamp', desc: 'Moon shaped soft night light' }
+    ];
+
+    const container = document.getElementById('productSection');
+
+    PRODUCTS.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'product';
+      div.innerHTML = `
+        <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+        <h3>${p.name}</h3>
+        <p>₹${p.price} Only</p>
+      `;
+      div.addEventListener('click', ()=> {
+        // save clicked product to localStorage and go to details.html
+        localStorage.setItem('selectedProduct', JSON.stringify(p));
+        window.location.href = 'details.html';
+      });
+      container.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>

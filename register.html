@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>Register Form</h2>
+    <form id="registerForm">
+
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label for="address">Address:</label>
+      <textarea id="address" name="address" rows="3" required></textarea>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password" required>
+
+      <input type="submit" value="Register">
+
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      // password check
+      if (password !== confirmPassword) {
+        alert("Passwords do not match ❌");
+        return;
+      }
+
+      // store in localStorage
+      localStorage.setItem('registeredUser', name);
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userPhone', phone);
+      localStorage.setItem('userAddress', address);
+      localStorage.setItem('userPassword', password);
+
+      alert("Registration Successful 🎉");
+      window.location.href = "login.html"; // redirect to login page
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Crazy Thingz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #98ccd0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #343a40;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      align-items: center;
+    }
+    .cart-item img {
+      width: 80px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .cart-item .meta {
+      flex: 1;
+    }
+    .cart-item .meta h4 { margin:0; font-size:16px; }
+    .cart-item .meta p { margin:3px 0; color:#555; font-size:14px; }
+    .cart-item .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 5px;
+    }
+    .cart-item .qty-control button {
+      padding: 3px 8px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      transition: 0.2s;
+    }
+    .cart-item .qty-control button:hover { background-color: #0056b3; }
+    .cart-item .remove-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .cart-item .remove-btn:hover { background-color: #c82333; }
+    .total {
+      text-align:right;
+      font-size:18px;
+      font-weight:bold;
+      margin-top:15px;
+    }
+    .btn {
+      padding:10px 20px;
+      margin:5px;
+      border:none;
+      border-radius:6px;
+      font-size:16px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+    .btn-place { background-color:#28a745; color:white; }
+    .btn-place:hover { background-color:#218838; }
+    .btn-back { background-color:#007bff; color:white; }
+    .btn-back:hover { background-color:#0056b3; }
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      margin-top: 260px;
+      padding: 15px;
+    }
+
+    /* payment modal */
+    #paymentModal {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index: 999;
+    }
+    #paymentModal .form-box {
+      background:white;
+      padding:20px;
+      border-radius:10px;
+      width:350px;
+      max-width:90%;
+      text-align: center;
+    }
+    #paymentModal h2 {
+      margin-bottom:15px;
+    }
+    #paymentModal input {
+      width:100%;
+      padding:8px;
+      margin:5px 0;
+      border:1px solid #ccc;
+      border-radius:5px;
+    }
+    .qr-img {
+      width:200px;
+      height:200px;
+      margin:10px auto;
+      display:block;
+      border:2px solid #ccc;
+      border-radius:10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Checkout</h1>
+</header>
+
+<main id="checkoutMain"></main>
+
+<footer>
+  <p>&copy; 2025 Crazy Thingz. All rights reserved.</p>
+  <p>Email: Crazythingz03@gmail.com | Contact: 9500047733</p>
+</footer>
+
+<script>
+  function renderCart(){
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const main = document.getElementById('checkoutMain');
+
+    if(cart.length === 0){
+      main.innerHTML = `<p style="text-align:center;">Your cart is empty!</p>
+                        <div style="text-align:center; margin-top:20px;">
+                          <button class="btn btn-back" onclick="goBack()">Back to Shop</button>
+                        </div>`;
+      return;
+    }
+
+    let total = 0;
+    let html = '';
+    cart.forEach((item,index)=>{
+      total += item.price * item.qty;
+      html += `<div class="cart-item">
+                 <img src="${item.img}" alt="${item.name}">
+                 <div class="meta">
+                   <h4>${item.name}</h4>
+                   <p>${item.desc || ''}</p>
+                   <p>₹${item.price} x ${item.qty} = ₹${item.price*item.qty}</p>
+                   <div class="qty-control">
+                     <button onclick="decreaseQty(${index})">-</button>
+                     <span>${item.qty}</span>
+                     <button onclick="increaseQty(${index})">+</button>
+                   </div>
+                 </div>
+                 <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+               </div>`;
+    });
+
+    html += `<div class="total">Total: ₹${total}</div>
+             <div style="text-align:center; margin-top:20px;">
+               <button class="btn btn-place" onclick="selectPayment()">Buy Now</button>
+               <button class="btn btn-back" onclick="goBack()">Continue Shopping</button>
+             </div>`;
+
+    main.innerHTML = html;
+  }
+
+  function increaseQty(index){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart[index].qty += 1;
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  function decreaseQty(index){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if(cart[index].qty > 1){
+      cart[index].qty -= 1;
+    } else {
+      cart.splice(index,1);
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  function removeItem(index){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.splice(index,1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  // Step 1: Choose payment type
+  function selectPayment(){
+    const html = `
+      <div id="paymentModal">
+        <div class="form-box">
+          <h2>Select Payment Method</h2>
+          <button class="btn btn-place" onclick="cashOnDelivery()">💵 Cash on Delivery</button><br>
+          <button class="btn btn-back" onclick="showPaymentForm()">💳 Online Payment</button><br>
+          <button class="btn btn-place" style="background:#34A853;" onclick="showGPay()">📱 Google Pay</button><br>
+          <button class="btn btn-back" onclick="closePaymentForm()">Cancel</button>
+        </div>
+      </div>`;
+    document.body.insertAdjacentHTML("beforeend", html);
+  }
+
+  // Step 2a: Cash on Delivery
+  function cashOnDelivery(){
+    alert("Order placed successfully with Cash on Delivery! 🏠");
+    localStorage.removeItem("cart");
+    closePaymentForm();
+    goBack();
+  }
+
+  // Step 2b: Online Card Payment
+  function showPaymentForm(){
+    closePaymentForm();
+    const formHTML = `
+      <div id="paymentModal">
+        <div class="form-box">
+          <h2>Online Payment</h2>
+          <form onsubmit="return submitPayment(event)">
+            <label>Cardholder Name</label><br>
+            <input type="text" id="name" required><br>
+            <label>Card Number</label><br>
+            <input type="text" id="card" maxlength="16" required><br>
+            <label>Expiry Date</label><br>
+            <input type="month" id="expiry" required><br>
+            <label>CVV</label><br>
+            <input type="password" id="cvv" maxlength="3" required><br>
+            <div style="text-align:center; margin-top:10px;">
+              <button type="submit" class="btn btn-place">Pay Now</button>
+              <button type="button" class="btn btn-back" onclick="closePaymentForm()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>`;
+    document.body.insertAdjacentHTML("beforeend", formHTML);
+  }
+
+  // Step 2c: GPay Option
+  function showGPay(){
+    closePaymentForm();
+    const gpayHTML = `
+      <div id="paymentModal">
+        <div class="form-box">
+          <h2>Scan & Pay with GPay</h2>
+          <img src="gpay.jpg" 
+               alt="GPay QR" class="qr-img">
+          <p>Scan this QR code using your Google Pay app.</p>
+          <button class="btn btn-place" onclick="confirmGPay()">I've Paid ✅</button>
+          <button class="btn btn-back" onclick="closePaymentForm()">Cancel</button>
+        </div>
+      </div>`;
+    document.body.insertAdjacentHTML("beforeend", gpayHTML);
+  }
+
+  function confirmGPay(){
+    alert("Payment received successfully via GPay ❤️");
+    localStorage.removeItem("cart");
+    closePaymentForm();
+    goBack();
+  }
+
+  function closePaymentForm(){
+    const modal = document.getElementById("paymentModal");
+    if(modal) modal.remove();
+  }
+
+  function submitPayment(e){
+    e.preventDefault();
+    alert("Payment successful! Order placed ❤️");
+    localStorage.removeItem("cart");
+    closePaymentForm();
+    goBack();
+    return false;
+  }
+
+  function goBack(){
+    window.location.href = 'elect.html';
+  }
+
+  renderCart();
+</script>
+
+</body>
+</html>
